@@ -5,6 +5,7 @@
 - URL access: `http://localhost:4000/`
 
 ## Vulnerability Analysis
+
 ### Unrestricted File Upload (/edit.php)
 
 ![[Pasted image 20240517115433.png]]
@@ -16,16 +17,16 @@
 ```
 
 - Success upload shell
-![[Pasted image 20240517120310.png]]
-
+  ![[Pasted image 20240517120310.png]]
 - While user experience the web site, they can relize that user can access images which are rendered in client by access image in `/upload/`
 
 ![[Pasted image 20240517120706.png]]
+
 - Access `shell.php` in web server to confirm the vulnerability
 
 ![[Pasted image 20240517120823.png]]
 
-- To fix this vulnerability, i recommend a snippset of code to filter some params of file upload 
+- To fix this vulnerability, i recommend a snippset of code to filter some params of file upload
 
 ```PHP
 $allowed = [ 'jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'png' => 'image/png', 'gif' => 'image/gif' ];
@@ -63,12 +64,13 @@ if ($realMimeType !== $allowed[$ext]) {
 ## Insecure Direct Object Reference (/edit.php)
 
 ![[Pasted image 20240517231731.png]]
+
 - Server will get the data of jeager to edit by if while dont check that user own it or not. In database design, jaeger 1, 2 and 3 belong to admin
 
 ![[Pasted image 20240517231943.png]]
 
 - Login with user1 credential
-  
+
 ![[Pasted image 20240517232209.png]]
 
 - Go to Provide, with user1's credential we can only get data of jaeger 4 & 5
