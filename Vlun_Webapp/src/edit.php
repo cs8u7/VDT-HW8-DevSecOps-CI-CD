@@ -109,19 +109,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id'])) {
          <?php
          $conn = createConnection();
 
-         $cookieValue = base64_decode($_COOKIE['auth']);
-         list($username, $password) = explode(':', $cookieValue);
-
-         $query = "SELECT id FROM users WHERE username = ? AND user_password = ?";
-         $prepare_query = $conn->prepare($query);
-         $prepare_query->bind_param("ss", $username, $password);
-         $prepare_query->execute();
-         $result = $prepare_query->get_result();
-         $row = $result->fetch_assoc();
-
-         $jaeger = "SELECT * FROM jaegers WHERE id = ? AND user_id = ?";
+         $jaeger = "SELECT * FROM jaegers WHERE id = ?";
          $jaeger_query = $conn->prepare($jaeger);
-         $jaeger_query->bind_param("ss", $_GET['id'], $row['id']);
+         $jaeger_query->bind_param("s", $_GET['id']);
          $jaeger_query->execute();
          $jaeger_result = $jaeger_query->get_result();
          $jaeger = $jaeger_result->fetch_assoc();
