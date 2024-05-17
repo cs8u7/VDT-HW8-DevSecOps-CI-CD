@@ -13,24 +13,10 @@ if (!isset($_GET["id"])) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id'])) {
    $id = intval($_POST['id']);
    if (isset($_FILES['file']) && $_FILES['file']['error'] == 0) {
-      $id = $_POST['id'];
-      $allowed = ['jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'png' => 'image/png', 'gif' => 'image/gif'];
       $fileTempName = $_FILES['file']['tmp_name'];
       $fileName = $_FILES['file']['name'];
       $fileSize = $_FILES['file']['size'];
       $fileType = $_FILES['file']['type'];
-
-      if (!preg_match('/^[a-zA-Z0-9_-]+\.(jpg|jpeg|png|gif)$/', $fileName)) {
-         header("Location: /edit.php?id=$id&error=invalid_file");
-         exit;
-      }
-
-      $ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-
-      if (!array_key_exists($ext, $allowed)) {
-         header("Location: /edit.php?id=$id&error=invalid_file");
-         exit;
-      }
 
       $maxsize = 100 * 1024 * 1024;
       if ($fileSize > $maxsize) {
@@ -38,21 +24,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id'])) {
          exit;
       }
 
-      if (in_array($fileType, $allowed)) {
-         $newFilename = uniqid() . '.' . $ext;
-         $uploadPath = './upload/' . $newFilename;
+      $uploadPath = './upload/' . $fileName;
 
-         if (move_uploaded_file($_FILES["file"]["tmp_name"], $uploadPath)) {
-            header("Location: /edit.php?id=$id&upload=done");
-            exit;
-         } else {
-            header("Location: /edit.php?id=$id&error=upload_error");
-            exit;
-         }
+      if (move_uploaded_file($fileTempName, $uploadPath)) {
+         $conn = createConnection();
+
+         $update_query = "UPDATE jaegers SET image_path = ? WHERE id = ?";
+         $prepare_update = $conn->prepare($update_query);
+         $new_image_path = $uploadPath;
+         $prepare_update->bind_param("si", $new_image_path, $id);
+         $prepare_update->execute();
+
+         header("Location: /edit.php?id=$id&upload=done");
+         exit;
       } else {
          header("Location: /edit.php?id=$id&error=upload_error");
          exit;
       }
+
    } else {
       header("Location: /edit.php?id=$id&error=file_error");
       exit;

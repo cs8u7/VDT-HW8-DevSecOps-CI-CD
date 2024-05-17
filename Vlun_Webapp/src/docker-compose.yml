@@ -20,7 +20,7 @@ services:
 
   jeager-mysql:
     build: ./database/
-    command: --default-authentication-plugin=caching_sha2_password
+    command: --default-authentication-plugin=mysql_native_password
     ports:
       - "3306:3306"
     environment:
