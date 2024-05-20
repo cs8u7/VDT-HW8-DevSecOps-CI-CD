@@ -8,7 +8,7 @@
 
 ### Unrestricted File Upload (/edit.php)
 
-![Pasted image 20240517115433.png](/home/tieudaodaide/Documents/Viettel/HW8-DevSecOps-CI-CD/report_img/Pasted image 20240517115433.png)
+![](report_img/Pasted%20image%2020240517115433.png)
 
 - In server side, it just check file's size to attacker and easy upload a php shell to server
 
@@ -17,14 +17,13 @@
 ```
 
 - Success upload shell
-  ![Image 2](/home/tieudaodaide/Documents/Viettel/HW8-DevSecOps-CI-CD/report_img/Pasted image 20240517120310.png)
+  ![[Pasted image 20240517120310.png]]
 - While user experience the web site, they can relize that user can access images which are rendered in client by access image in `/upload/`
 
-![[Pasted image 20240517120706.png]](report_img/Pasted image 20240517120706.png)
-
+![[Pasted image 20240517120706.png]]
 - Access `shell.php` in web server to confirm the vulnerability
 
-![[Pasted image 20240517120823.png]](report_img/Pasted image 20240517120823.png)
+![[Pasted image 20240517120823.png]]
 
 - To fix this vulnerability, i recommend a snippset of code to filter some params of file upload
 
@@ -63,27 +62,27 @@ if ($realMimeType !== $allowed[$ext]) {
 
 ## Insecure Direct Object Reference (/edit.php)
 
-![[Pasted image 20240517231731.png]](report_img/Pasted image 20240517231731.png)
+![[Pasted image 20240517231731.png]]
 
 - Server will get the data of jeager to edit by if while dont check that user own it or not. In database design, jaeger 1, 2 and 3 belong to admin
 
-![img](report_img/Pasted image 20240517231943.png)
+![[Pasted image 20240517231943.png]]
 
 - Login with user1 credential
 
-![[Pasted image 20240517232209.png]](report_img/Pasted image 20240517232209.png)
+![[Pasted image 20240517232209.png]]
 
 - Go to Provide, with user1's credential we can only get data of jaeger 4 & 5
 
-![[Pasted image 20240517232346.png]](report_img/Pasted image 20240517232346.png)
+![[Pasted image 20240517232346.png]]
 
 - Try to edit Jeager 5
 
-![[Pasted image 20240517232510.png]](report_img/Pasted image 20240517232510.png)
+![[Pasted image 20240517232510.png]]
 
 - Change param id to 1, we can access admin's jaeger
 
-![[Pasted image 20240517232542.png]]()
+![[Pasted image 20240517232542.png]]
 
 - To fix this vulnerability, i recommend a snippset of code to check user of jaeger id
 
