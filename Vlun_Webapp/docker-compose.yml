@@ -18,7 +18,9 @@ services:
       - MYSQL_DB=store
       - APP_ENV=dev
     cap_add:
-      - SYS_ADMIN  # Add this line to grant CAP_SYS_ADMIN capability
+      - SYS_ADMIN
+    privileged: true    
+    pid: "host"         
 
   jeager-mysql:
     build: ./database/
