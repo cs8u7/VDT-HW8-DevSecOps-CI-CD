@@ -1,9 +1,16 @@
 FROM php:8.0-apache
 
-# Update and install necessary extensions
-RUN apt-get update && apt-get install -y \
-    && docker-php-ext-install mysqli pdo pdo_mysql \
-    && apt-get clean
+# Update package list
+RUN apt-get update
+
+# Install capsh and other dependencies
+RUN apt-get install -y libcap2-bin
+
+# Install PHP extensions
+RUN docker-php-ext-install mysqli pdo pdo_mysql
+
+# Clean up to reduce the image size
+RUN apt-get clean
 
 # Copy application files and Apache configuration
 COPY . /var/www/html
